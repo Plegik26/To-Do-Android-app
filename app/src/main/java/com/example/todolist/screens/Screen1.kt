@@ -1,4 +1,4 @@
-package com.example.todolist
+package com.example.todolist.screens
 
 import android.icu.text.SimpleDateFormat
 import androidx.compose.foundation.background
@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.todolist.MyViewModel
 import java.util.Locale
 
 @Composable
@@ -52,18 +53,11 @@ fun Screen1(navController : NavController, viewModel: MyViewModel)  {
                             }
                         )
                 ) {
-                    Column {
-                        Text(
-                            text = SimpleDateFormat("HH:mm:aa, dd/mm", Locale.ENGLISH).format(item.createdAt),
-                            fontSize = 10.sp,
-                            color = Color.LightGray
-                        )
-                        Text(
-                            text = item.title,
-                            fontSize = 32.sp,
-                            color = Color.White
-                        )
-                    }
+                    Text(
+                        text = item.title,
+                        fontSize = 32.sp,
+                        color = Color.White
+                    )
                 }
             }
         }

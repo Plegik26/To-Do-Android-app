@@ -1,6 +1,5 @@
-package com.example.todolist
+package com.example.todolist.screens
 
-import android.widget.Button
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.example.todolist.MyViewModel
 
 @Composable
 fun Screen3(navController: NavController, viewModel: MyViewModel)   {
