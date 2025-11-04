@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 
 @Composable
-fun Screen3(navController: NavController)   {
+fun Screen3(navController: NavController, viewModel: MyViewModel)   {
     Column(
         Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

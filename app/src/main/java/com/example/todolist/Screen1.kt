@@ -1,39 +1,31 @@
 package com.example.todolist
 
-import android.R.attr.text
 import android.icu.text.SimpleDateFormat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.snapping.SnapPosition
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import java.util.Locale
 
 @Composable
-fun Screen1(navController : NavController)  {
-    val todoList = getFakeTodo()
+fun Screen1(navController : NavController, viewModel: MyViewModel)  {
+    val todoList by viewModel.todoItems.observeAsState(getTodo())
 
     Column(
         Modifier.fillMaxHeight(),
@@ -54,7 +46,11 @@ fun Screen1(navController : NavController)  {
                         .padding(8.dp)
                         .background(Color(0xFF2E6F40))
                         .padding(16.dp)
-                        .clickable(onClick = { navController.navigate("screen2") })
+                        .clickable(onClick = {
+                                navController.navigate("screen2")
+                                viewModel.setSelectedItem(item)
+                            }
+                        )
                 ) {
                     Column {
                         Text(
