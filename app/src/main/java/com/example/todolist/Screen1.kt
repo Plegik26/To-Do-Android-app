@@ -25,7 +25,7 @@ import java.util.Locale
 
 @Composable
 fun Screen1(navController : NavController, viewModel: MyViewModel)  {
-    val todoList by viewModel.todoItems.observeAsState(getTodo())
+    val todoList by viewModel.todoItems.observeAsState(emptyList())
 
     Column(
         Modifier.fillMaxHeight(),
