@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,7 +28,7 @@ import androidx.navigation.NavController
 @Composable
 fun Screen2(navController: NavController, viewModel: MyViewModel) {
     val selectedItem by viewModel.selectedItem.observeAsState()
-    var newNote by remember { mutableStateOf("") }
+    var newNote by rememberSaveable { mutableStateOf("") }
 
     Column(
         modifier = Modifier
