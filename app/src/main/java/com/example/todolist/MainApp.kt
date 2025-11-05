@@ -2,12 +2,18 @@ package com.example.todolist
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.MailOutline
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -22,7 +28,7 @@ import com.example.todolist.screens.Screen3
 sealed class Screens(val route: String, val title: String) {
     object Screen1 : Screens("screen1", "To-Do")
     object Screen2 : Screens("screen2", "Details")
-    object Screen3 : Screens("screen3", "History")
+    object Screen3 : Screens("screen3", "Notes")
 }
 
 @Composable
@@ -35,10 +41,12 @@ fun MainApp() {
 
     Scaffold(
         bottomBar = {
+            // Hide bottom bar on Screen2
             if (currentRoute != Screens.Screen2.route) {
                 BottomNavigationBar(navController, currentRoute)
             }
-        }
+        },
+        containerColor = Color(0xFFF8F8F8)
     ) { innerPadding ->
         NavHost(
             navController = navController,
@@ -59,19 +67,28 @@ fun BottomNavigationBar(navController: NavController, currentRoute: String?) {
         Screens.Screen3
     )
 
-    NavigationBar {
+    NavigationBar(
+        containerColor = Color.White,
+    ) {
         items.forEach { screen ->
+            val selected = currentRoute == screen.route
+
             NavigationBarItem(
-                selected = currentRoute == screen.route,
+                selected = selected,
                 onClick = { navController.navigate(screen.route) },
                 icon = {
                     when (screen) {
                         Screens.Screen1 -> Icon(imageVector = Icons.Default.List, contentDescription = screen.title)
-                        Screens.Screen3 -> Icon(imageVector = Icons.Default.DateRange, contentDescription = screen.title)
+                        Screens.Screen3 -> Icon(imageVector = Icons.Default.MailOutline, contentDescription = screen.title)
                         else -> {}
                     }
                 },
-                label = { Text(screen.title) }
+                label = {
+                    Text(
+                        text = screen.title,
+                        color = if (selected) Color(0xFF2E6F40) else Color.Gray,
+                    )
+                }
             )
         }
     }

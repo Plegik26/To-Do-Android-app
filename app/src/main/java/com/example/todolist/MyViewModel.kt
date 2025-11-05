@@ -1,6 +1,5 @@
 package com.example.todolist
 
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -52,18 +51,19 @@ class MyViewModel : ViewModel() {
         }
     }
 }
+
 fun getTodo() : List<Todo>  {
     return listOf(
-        Todo(1, "Shopping", listOf(""),0xFF2E6F40),
-        Todo(2, "Notes", listOf(""),0xFF2E6F40),
-        Todo(3, "Movies", listOf(""),0xFF2E6F40),
-        Todo(4, "Music", listOf(""),0xFF2E6F40),
-        Todo(5, "Friends", listOf(""),0xFF2E6F40),
-        Todo(6, "Assignment", listOf(""),0xFF2E6F40),
-        Todo(7, "Games", listOf(""),0xFF2E6F40),
-        Todo(8, "Recipes", listOf(""),0xFF2E6F40),
-        Todo(9, "College", listOf(""), 0xFF2E6F40),
-        Todo(10, "Books", listOf(""), 0xFF2E6F40),
+        Todo(1, "Shopping", emptyList(),0xFF2E6F40),
+        Todo(2, "Notes", emptyList(),0xFF2E6F40),
+        Todo(3, "Movies", emptyList(),0xFF2E6F40),
+        Todo(4, "Music", emptyList(),0xFF2E6F40),
+        Todo(5, "Friends", emptyList(),0xFF2E6F40),
+        Todo(6, "Assignment", emptyList(),0xFF2E6F40),
+        Todo(7, "Games", emptyList(),0xFF2E6F40),
+        Todo(8, "Recipes", emptyList(),0xFF2E6F40),
+        Todo(9, "College", emptyList(), 0xFF2E6F40),
+        Todo(10, "Books", emptyList(), 0xFF2E6F40),
     )
 }
 
