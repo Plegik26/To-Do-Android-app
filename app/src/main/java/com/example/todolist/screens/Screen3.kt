@@ -1,22 +1,34 @@
 package com.example.todolist.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -30,13 +42,21 @@ fun Screen3(navController: NavController, viewModel: MyViewModel) {
 
     val todoList by viewModel.todoItems.observeAsState(emptyList())
     val nonPriorityItem = 0xFF2E6F40
-    var isDialOpen by rememberSaveable { mutableStateOf(false) }
+    var selected by rememberSaveable { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { isDialOpen = !isDialOpen },
+                onClick = {
+                    if (selected) {
+                        navController.navigate("screen2")
+                    }
+                    else    {
+                        Toast.makeText(context, "Select an item to add to...", Toast.LENGTH_SHORT).show()
+                    }
+                },
                 containerColor = Color(0xFF2E6F40),
                 contentColor = Color.White,
             ) {
@@ -51,6 +71,7 @@ fun Screen3(navController: NavController, viewModel: MyViewModel) {
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             Text(
                 text = "Tasks Edited",
                 fontSize = 36.sp,
@@ -71,12 +92,16 @@ fun Screen3(navController: NavController, viewModel: MyViewModel) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 8.dp)
-                                .shadow(6.dp, RoundedCornerShape(16.dp))
                                 .background(
                                     color = Color(0xFFF0F0F0),
                                     shape = RoundedCornerShape(16.dp)
                                 )
                                 .padding(20.dp)
+                                .clickable( onClick = {
+                                    selected = true
+                                   /* TODO: Try implement */ Modifier.background(Color(0xFF8A8888))
+                                    viewModel.setSelectedItem(item)
+                                } )
                         ) {
                             Text(
                                 textAlign = TextAlign.Center,
