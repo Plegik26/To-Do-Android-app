@@ -1,17 +1,16 @@
 package com.example.todolist
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import java.time.Instant
-import java.util.Date
 import kotlin.collections.map
 
 data class Todo(
-    var id : Int,
-    var title : String,
-    var notes : List<String>,
-    var createdAt : Date
+    var id: Int,
+    var title: String,
+    var notes: List<String>,
+    var priority: Long
 )
 
 class MyViewModel : ViewModel() {
@@ -37,22 +36,34 @@ class MyViewModel : ViewModel() {
             if (item.id == updatedItem.id) {
                 item.notes = updatedNotes
             }
+        }
+    }
 
+    fun changePriority(newPrio : Long)  {
+        val currentItem = _selectedItem.value
+        val updatedItem = currentItem.copy(priority = newPrio)
+        _selectedItem.value = updatedItem
+
+        // Update the main list too
+        _todoItems.value?.map { item ->
+            if (item.id == updatedItem.id) {
+                item.priority = newPrio
+            }
         }
     }
 }
 fun getTodo() : List<Todo>  {
     return listOf(
-        Todo(1, "First Todo", listOf(""),Date.from(Instant.now())),
-        Todo(2, "Second Todo", listOf(""),Date.from(Instant.now())),
-        Todo(3, "Third Todo", listOf(""),Date.from(Instant.now())),
-        Todo(4, "Fourth Todo", listOf(""),Date.from(Instant.now())),
-        Todo(5, "Fifth Todo", listOf(""),Date.from(Instant.now())),
-        Todo(6, "Sixth Todo", listOf(""),Date.from(Instant.now())),
-        Todo(7, "Seventh Todo", listOf(""),Date.from(Instant.now())),
-        Todo(8, "Eight Todo", listOf(""),Date.from(Instant.now())),
-        Todo(9, "Ninth Todo", listOf(""), Date.from(Instant.now())),
-        Todo(10, "Tenth Todo", listOf(""), Date.from(Instant.now())),
+        Todo(1, "Shopping", listOf(""),0xFF2E6F40),
+        Todo(2, "Notes", listOf(""),0xFF2E6F40),
+        Todo(3, "Movies", listOf(""),0xFF2E6F40),
+        Todo(4, "Music", listOf(""),0xFF2E6F40),
+        Todo(5, "Friends", listOf(""),0xFF2E6F40),
+        Todo(6, "Assignment", listOf(""),0xFF2E6F40),
+        Todo(7, "Games", listOf(""),0xFF2E6F40),
+        Todo(8, "Recipes", listOf(""),0xFF2E6F40),
+        Todo(9, "College", listOf(""), 0xFF2E6F40),
+        Todo(10, "Books", listOf(""), 0xFF2E6F40),
     )
 }
 

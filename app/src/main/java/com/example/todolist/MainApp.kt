@@ -8,15 +8,17 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.todolist.screens.Screen1
 import com.example.todolist.screens.Screen2
 import com.example.todolist.screens.Screen3
 
-// Define routes
+// routes
 sealed class Screens(val route: String, val title: String) {
     object Screen1 : Screens("screen1", "To-Do")
     object Screen2 : Screens("screen2", "Details")
@@ -24,9 +26,19 @@ sealed class Screens(val route: String, val title: String) {
 }
 
 @Composable
-fun MainApp(navController: NavHostController, viewModel: MyViewModel) {
+fun MainApp() {
+    val navController = rememberNavController()
+    val viewModel: MyViewModel = viewModel()
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
     Scaffold(
-        bottomBar = { BottomNavigationBar(navController) }
+        bottomBar = {
+            if (currentRoute != Screens.Screen2.route) {
+                BottomNavigationBar(navController, currentRoute)
+            }
+        }
     ) { innerPadding ->
         NavHost(
             navController = navController,
@@ -41,14 +53,11 @@ fun MainApp(navController: NavHostController, viewModel: MyViewModel) {
 }
 
 @Composable
-fun BottomNavigationBar(navController: NavHostController) {
+fun BottomNavigationBar(navController: NavController, currentRoute: String?) {
     val items = listOf(
         Screens.Screen1,
         Screens.Screen3
     )
-
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
 
     NavigationBar {
         items.forEach { screen ->
