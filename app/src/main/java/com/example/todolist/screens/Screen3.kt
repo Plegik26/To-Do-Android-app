@@ -3,20 +3,26 @@ package com.example.todolist.screens
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,6 +50,8 @@ fun Screen3(navController: NavController, viewModel: MyViewModel) {
     val nonPriorityItem = 0xFF2E6F40
     var selected by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
+    var searchQuery by rememberSaveable { mutableStateOf("") }
+    var searchByTitle by rememberSaveable { mutableStateOf(true) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -71,6 +79,50 @@ fun Screen3(navController: NavController, viewModel: MyViewModel) {
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                OutlinedTextField(
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it },
+                    label = { Text("Search ${if (searchByTitle) "by Title" else "by Note"}") },
+                    singleLine = true,
+                    modifier = Modifier.height(55.dp)
+                        .width(250.dp),
+                    shape = RoundedCornerShape(12.dp)
+                )
+
+                // Toggle search type
+                Button(
+                    onClick = { searchByTitle = !searchByTitle },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF558B6E)
+                    ),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text(
+                        text = if (searchByTitle) "Title" else "Note",
+                        color = Color.White
+                    )
+                }
+            }
+
+            val filteredList = todoList.filter { item ->
+                val query = searchQuery.trim().lowercase()
+                if (query.isBlank()) {
+                    true
+                }
+                else if (searchByTitle) {
+                    item.title.lowercase().contains(query)
+                }
+                else {
+                    item.notes.any { it.lowercase().contains(query) }
+                }
+            }
 
             Text(
                 text = "Tasks Edited",
@@ -86,7 +138,7 @@ fun Screen3(navController: NavController, viewModel: MyViewModel) {
                 modifier = Modifier
                     .fillMaxHeight()
             ) {
-                items(todoList) { item: Todo ->
+                items(filteredList) { item: Todo ->
                     if (item.notes.isNotEmpty() || item.priority != nonPriorityItem) {
                         Column(
                             modifier = Modifier
