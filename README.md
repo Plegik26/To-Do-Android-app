@@ -16,10 +16,8 @@ It allows users to view tasks, add details or notes, and track progress across m
 ---
 
 ### Screen 2: Task Details
-- Saves user input in a shared ViewModel that is lifecycle-aware.  
+- Saves user input in a shared ViewModel that is lifecycle-aware.
 - Uses rememberSaveable to preserve input across configuration changes.  
-- Uses LaunchedEffect to trigger side effects such as toast messages or calculations.  
-- Optionally uses DisposableEffect for cleanup when the composable is removed.  
 - Includes a Back button to return to the task list.
 
 ---
